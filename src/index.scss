@@ -1,0 +1,239 @@
+* {
+  outline: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+:root {
+  color-scheme: light dark;
+  --color-primary: #ffffff;
+  --color-secondary: #fcfafa;
+  --color-third: #005a6f;
+  --color-error: #ef4146;
+  --gradient-primary: linear-gradient(90deg, #a29bd4, #989fdd);
+  --text-primary: #333333;
+  --text-default: #ffffff;
+  --text-secondary: #ffffff;
+  --text-disabled: #acacbe;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* dark theme colors */
+    --color-primary: #3b3b3b;
+    --color-secondary: #161616;
+    --color-third: #005a6f;
+    --color-error: #ef4146;
+    --gradient-primary: linear-gradient(90deg, #a29bd4, #989fdd);
+    --text-primary: #b6b6b9;
+    --text-default: #545662;
+    --text-secondary: #ffffff;
+    --text-disabled: #acacbe;
+  }
+}
+
+
+
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans,
+    sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#app {
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-secondary);
+}
+
+@for $i from 1 through 100 {
+  .h-#{$i} {
+    height: #{$i}px;
+  }
+
+  .l-#{$i} {
+    line-height: #{$i}px;
+  }
+
+  .f-#{$i} {
+    font-size: #{$i}px;
+  }
+
+  .w-#{$i} {
+    width: #{$i}px;
+  }
+
+  .br-#{$i} {
+    border-radius: #{$i}px;
+  }
+}
+
+.dot {
+  display: inline-block;
+}
+
+.br-f {
+  border-radius: 100%;
+}
+
+$directions: (
+  t: top,
+  r: right,
+  b: bottom,
+  l: left
+);
+
+@each $abbr,
+$dir in $directions {
+  @for $i from 1 through 100 {
+    .p-#{$abbr}-#{$i} {
+      padding-#{$dir}: #{$i}px;
+    }
+
+    .m-#{$abbr}-#{$i} {
+      margin-#{$dir}: #{$i}px;
+    }
+  }
+}
+
+.w-f {
+  width: 100%;
+}
+
+.h-f {
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1 1 0;
+}
+
+.t-l {
+  text-align: left;
+}
+
+.t-r {
+  text-align: right;
+}
+
+.t-c {
+  color: var(--text-primary);
+}
+
+.t-s {
+  color: var(--text-secondary);
+}
+
+.bg {
+  background-color: var(--color-primary);
+}
+
+.bg-sec {
+  background-color: var(--color-secondary);
+}
+
+.bg-error {
+  background-color: var(--color-error);
+}
+
+.b-card1 {
+  background-color: var(--color-primary);
+  max-width: 80%;
+}
+
+.b-card2 {
+  background-color: var(--color-third);
+  max-width: 80%;
+}
+
+.of-h {
+  overflow: hidden;
+}
+
+.shadow {
+  box-shadow: rgba(0, 0, 0, 0)0px 0px 0px 0px, rgba(0, 0, 0, 0)0px 0px 0px 0px, rgba(0, 0, 0, 0.1)0px 0px 10px 0px;
+}
+
+.shadow-sec {
+  box-shadow: rgba(0, 0, 0, 0)0px 0px 0px 0px, rgba(0, 0, 0, 0)0px 0px 0px 0px, rgb(172, 172, 190, 0.6) 0px 0px 10px 0px;
+}
+
+.bbox {
+  box-sizing: border-box;
+}
+
+.b-t-1 {
+  border-top: 1px solid #8080805c;
+}
+
+.b-b-1 {
+  border-bottom: 1px solid #8080805c;
+}
+
+.j-center {
+  justify-content: center;
+}
+
+.a-center {
+  align-items: center;
+}
+
+.j-start {
+  justify-content: flex-start;
+}
+
+.j-end {
+  justify-content: flex-end;
+}
+
+.a-start {
+  align-items: flex-start;
+}
+
+.a-end {
+  align-items: flex-end;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---
+.title{
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
