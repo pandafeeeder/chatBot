@@ -11,7 +11,7 @@ const headers = {
 
 
 function qa(prompt) {
-    return axios.post('https://chat.pandafeeder.xyz/chat', {
+    return axios.post('https://dev.pandafeeder.xyz/chat', {
         text: prompt.content
     }, { headers: headers })
 }
