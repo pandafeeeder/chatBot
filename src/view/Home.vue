@@ -171,10 +171,10 @@ onMounted(() => {
   const date = new Date().getDate();
   console.log(date, ticket.value, "-----", ticket.value);
   if (date != preDate) {
-    ticket.value = 0;
+    ticket.value = 1;
     localStorage.setItem("879rhiw7e2", date);
   } else {
-    ticket.value = Number(tickets) || 0;
+    ticket.value = Number(tickets) || 1;
   }
 });
 </script>
