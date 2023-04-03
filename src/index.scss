@@ -16,6 +16,7 @@
   --text-default: #ffffff;
   --text-secondary: #ffffff;
   --text-disabled: #acacbe;
+  --main-bg-color:radial-gradient(61.04% 89.69% at 100% 100%, rgba(200, 250, 255, 0.08) 0%, rgba(28, 210, 229, 0.08) 40.63%, rgba(28, 210, 229, 0) 100%), radial-gradient(43.78% 64.34% at 60.31% 100%, rgba(23, 74, 228, 0.08) 0%, rgba(23, 74, 228, 0) 100%), linear-gradient(180deg, rgba(23, 74, 228, 0) 29.44%, rgba(23, 74, 228, 0.06) 100%), linear-gradient(90deg, #F3F3F7 0%, #EBF0F9 100%);
 }
 
 
@@ -31,6 +32,7 @@
     --text-default: #545662;
     --text-secondary: #ffffff;
     --text-disabled: #acacbe;
+  --main-bg-color:#161616
   }
 }
 
@@ -158,12 +160,18 @@ $dir in $directions {
 
 .b-card1 {
   background-color: var(--color-primary);
-  max-width: 80%;
+  max-width: 768px;
 }
 
 .b-card2 {
   background-color: var(--color-third);
-  max-width: 80%;
+  max-width: 768px;
+}
+.w-m{
+  max-width: 1184px;
+}
+.w-s{
+  max-width: 1184px;
 }
 
 .of-h {
@@ -215,6 +223,11 @@ $dir in $directions {
 }
 
 
+.main-bg {
+  background: var(--main-bg-color)
+  ;
+}
+
 
 
 
@@ -232,7 +245,7 @@ $dir in $directions {
 
 
 // ---
-.title{
+.title {
   font-size: 16px;
   font-weight: 600;
   text-align: center;

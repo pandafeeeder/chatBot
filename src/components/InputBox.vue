@@ -1,5 +1,5 @@
 <template>
-  <div class="box bg shadow">
+  <div class="box bg shadow" style="max-width: 650px; margin: auto; border-radius: 22px">
     <textarea
       id="message"
       @input="adjustTextareaHeight"
@@ -74,6 +74,7 @@ const adjustTextareaHeight = () => {
   position: sticky;
   bottom: 20px;
 }
+
 .message-box {
   font-family: inherit;
   font-weight: inherit;
@@ -120,6 +121,7 @@ const adjustTextareaHeight = () => {
 .tip {
   color: #a59c94;
   font-size: 12px;
+  text-align: center;
 }
 
 a {

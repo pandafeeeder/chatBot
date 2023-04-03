@@ -12,7 +12,7 @@
     display: inline-block;
     position: absolute;
     top: 10px;
-    left: calc(50% - 15px);
+    left: calc(50% - 8px);
 }
 
 .dot1,

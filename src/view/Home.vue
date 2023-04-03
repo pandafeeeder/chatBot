@@ -1,7 +1,7 @@
 <template>
-  <div class="home bg-sec t-c">
+  <div class="home main-bg t-c">
     <div class="header">
-      <div class="title t-c">GPT-3.5</div>
+      <div class="title t-c l-38">GPT-3.5</div>
     </div>
     <div class="content">
       <div class="container talk-box of-h p-b-6" ref="container">
@@ -13,8 +13,10 @@
               :class="{
                 'm-t-15': item.role === 'user' && index !== 0,
                 'm-b-15': item.role === 'user' && index !== messages.length - 1,
+                'p-r-48': item.role !== 'user',
+                'p-l-48': item.role === 'user',
               }"
-              class="flex column m-b-20"
+              class="flex column m-b-20 w-m"
             >
               <div
                 class="flex row t-c"
@@ -25,9 +27,11 @@
               >
                 <div
                   v-if="item.role === 'assistant'"
-                  class="shadow flex flex-1 column br-12 p-l-10 p-t-10 p-r-10 p-b-10 br-12 b-card1"
+                  class="shadow flex column br-12 p-l-10 p-t-10 p-r-10 p-b-10 br-12 b-card1"
                 >
-                  <div class="l-24 f-16 sec-c">{{ item.content }}</div>
+                  <div class="l-24 f-16 sec-c">
+                    <Markdown :source="item.content"></Markdown>
+                  </div>
                   <div class="l-24 w-f t-r f-12">
                     {{ index > 0 ? `${item.index - 1}/10` : "" }}
                   </div>
@@ -37,11 +41,13 @@
                   class="a-end f-16 l-24 p-l-10 p-t-10 p-r-10 p-b-10 br-12"
                   :class="{
                     ' b-card1 t-c shadow t-l': item.role === 'error',
-                    'b-card2 t-s t-r': item.role === 'user',
+                    'b-card2 t-s t-l': item.role === 'user',
                   }"
                 >
-                  <span>{{ item.content }}</span
-                  ><span
+                  <!-- <span>{{ item.content }}</span
+                  > -->
+                  <Markdown :source="item.content"></Markdown>
+                  <span
                     v-if="item.role === 'error'"
                     class="w-5 h-5 br-f bg-error dot"
                   ></span>
@@ -51,9 +57,12 @@
           </div>
         </div>
       </div>
-      <div class="footer p-l-10 p-r-10 bg-sec bbox shadow">
+      <div class="footer p-l-10 p-r-10 bg-sec bbox w-s">
         <Loader v-show="status"></Loader>
-        <div class="p-t-20 p-b-20 p-l-10 p-r-10 bbox">
+        <div
+          class="p-t-20 p-b-20 p-l-10 p-r-10 bbox"
+          
+        >
           <input-box @send="send" :status="status" ref="msgBox"></input-box>
           <div class="tips">
             因openai的token数量有限，所以对功能有一些限制。如果回答不完整，可以发送“继续”来获取剩余回答。
@@ -67,6 +76,7 @@
 
 <script setup>
 import { reactive, onMounted, ref, nextTick } from "vue";
+import Markdown from "vue3-markdown-it";
 import InputBox from "../components/InputBox.vue";
 import Loader from "../components/Loader.vue";
 import { qa } from "../service";
@@ -174,7 +184,6 @@ onMounted(() => {
   margin: auto;
   height: 100%;
   position: relative;
-  max-width: 640px;
   display: flex;
   flex-direction: column;
 }
@@ -264,10 +273,17 @@ onMounted(() => {
     margin-top: 5px;
     color: #a59c94;
     font-size: 12px;
+    text-align: center;
   }
 
   a {
     color: orange;
+  }
+}
+
+@media only screen and (min-width: 1184px) {
+  .footer {
+    background: none;
   }
 }
 </style>

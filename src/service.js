@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const BASE_URL = '/api'
+let BASE_URL = '/api'
+// BASE_URL=https://dev.pandafeeder.xyz
 
 const OPENAI_API_KEY = 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // replace with your API key
 const headers = {
@@ -11,7 +12,7 @@ const headers = {
 
 
 function qa(prompt) {
-    return axios.post('https://dev.pandafeeder.xyz/chat', {
+    return axios.post(BASE_URL + '/chat', {
         text: prompt.content
     }, { headers: headers })
 }
