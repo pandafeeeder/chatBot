@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let BASE_URL = ''
+let BASE_URL = '/api'
 BASE_URL= 'https://devs.pandafeeder.xyz'
 
 const OPENAI_API_KEY = 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // replace with your API key

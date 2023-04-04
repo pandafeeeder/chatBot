@@ -1,5 +1,5 @@
 <template>
-  <div class="box bg shadow" style="max-width: 650px; margin: auto; border-radius: 22px">
+  <div class="box bg shadow w-m" style="margin: auto; border-radius: 22px">
     <textarea
       id="message"
       @input="adjustTextareaHeight"
@@ -73,6 +73,9 @@ const adjustTextareaHeight = () => {
   padding-left: 1rem;
   position: sticky;
   bottom: 20px;
+  &:hover {
+    border-radius: 12px;
+  }
 }
 
 .message-box {
@@ -93,7 +96,12 @@ const adjustTextareaHeight = () => {
   max-height: 200px;
   height: 24px;
   overflow-y: hidden;
+
+  &:hover {
+    height: 48px !important;
+  }
 }
+
 .btn {
   border: none;
   -webkit-text-size-adjust: 100%;

@@ -1,6 +1,6 @@
 <template>
   <div class="home main-bg t-c">
-    <div class="header">
+    <div class="header w-m">
       <div class="title t-c l-38">GPT-3.5</div>
     </div>
     <div class="content">
@@ -16,7 +16,7 @@
                 'p-r-48': item.role !== 'user',
                 'p-l-48': item.role === 'user',
               }"
-              class="flex column m-b-20 w-m"
+              class="flex column m-b-20 w-m bbox"
             >
               <div
                 class="flex row t-c"
