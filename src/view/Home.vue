@@ -106,7 +106,7 @@ const send = (value) => {
   messages.push({ role: "user", content: value.value });
   status.value = true;
   localStorage.setItem("879rhiw7e3", ++ticket.value);
-  const promots = messages.slice(1);
+  const promots = messages.slice(1).filter(e=>e.role === "assistant" || e.role === "user");
   qa({
     content: promots.map((e) => {
       if (e.role === "assistant" || e.role === "user") {
