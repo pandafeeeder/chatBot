@@ -3,7 +3,21 @@
   padding: 0;
   margin: 0;
   transition: all ease .3s;
+  word-wrap: break-word;
   word-break: break-all;
+
+  li {
+    list-style-position: inside;
+  }
+
+  p {
+    word-wrap: break-word !important;
+    display: contents;
+  }
+}
+
+#app {
+  overflow-y: auto;
 }
 
 :root {
@@ -11,13 +25,14 @@
   --color-primary: #ffffff;
   --color-secondary: #fcfafa;
   --color-third: #005a6f;
+  --color-third-lg: linear-gradient(90deg, #006880 10.79%, #005366 87.08%);
   --color-error: #ef4146;
   --gradient-primary: linear-gradient(90deg, #a29bd4, #989fdd);
   --text-primary: #333333;
   --text-default: #ffffff;
   --text-secondary: #ffffff;
   --text-disabled: #acacbe;
-  --main-bg-color:radial-gradient(61.04% 89.69% at 100% 100%, rgba(200, 250, 255, 0.08) 0%, rgba(28, 210, 229, 0.08) 40.63%, rgba(28, 210, 229, 0) 100%), radial-gradient(43.78% 64.34% at 60.31% 100%, rgba(23, 74, 228, 0.08) 0%, rgba(23, 74, 228, 0) 100%), linear-gradient(180deg, rgba(23, 74, 228, 0) 29.44%, rgba(23, 74, 228, 0.06) 100%), linear-gradient(90deg, #F3F3F7 0%, #EBF0F9 100%);
+  --main-bg-color: radial-gradient(61.04% 89.69% at 100% 100%, rgba(200, 250, 255, 0.08) 0%, rgba(28, 210, 229, 0.08) 40.63%, rgba(28, 210, 229, 0) 100%), radial-gradient(43.78% 64.34% at 60.31% 100%, rgba(23, 74, 228, 0.08) 0%, rgba(23, 74, 228, 0) 100%), linear-gradient(180deg, rgba(23, 74, 228, 0) 29.44%, rgba(23, 74, 228, 0.06) 100%), linear-gradient(90deg, #F3F3F7 0%, #EBF0F9 100%);
 }
 
 
@@ -33,7 +48,7 @@
     --text-default: #545662;
     --text-secondary: #ffffff;
     --text-disabled: #acacbe;
-  --main-bg-color:#161616
+    --main-bg-color: #161616
   }
 }
 
@@ -79,7 +94,7 @@ body {
   }
 }
 
-.dot {
+span {
   display: inline-block;
 }
 
@@ -96,7 +111,7 @@ $directions: (
 
 @each $abbr,
 $dir in $directions {
-  @for $i from 1 through 100 {
+  @for $i from 1 through 200 {
     .p-#{$abbr}-#{$i} {
       padding-#{$dir}: #{$i}px;
     }
@@ -154,6 +169,9 @@ $dir in $directions {
 .bg-sec {
   background-color: var(--color-secondary);
 }
+.bg-third{
+  background: var(--color-third-lg);
+}
 
 .bg-error {
   background-color: var(--color-error);
@@ -168,15 +186,21 @@ $dir in $directions {
   background-color: var(--color-third);
   max-width: 768px;
 }
-.w-m{
+
+.w-m {
   max-width: 1184px;
 }
-.w-s{
+
+.w-s {
   max-width: 1184px;
 }
 
 .of-h {
   overflow: hidden;
+}
+
+.of-a {
+  overflow-y: auto;
 }
 
 .shadow {
@@ -225,12 +249,20 @@ $dir in $directions {
 
 
 .main-bg {
-  background: var(--main-bg-color)
-  ;
+  background: var(--main-bg-color);
 }
 
+.t-center {
+  text-align: center;
+}
 
+.m-auto {
+  margin: auto;
+}
 
+.a-n {
+  text-decoration: none;
+}
 
 
 
@@ -250,4 +282,42 @@ $dir in $directions {
   font-size: 16px;
   font-weight: 600;
   text-align: center;
+}
+
+.loading {
+  span {
+    display: inline-block;
+    font-size: 30px;
+    margin-right: 5px;
+  }
+  span {
+    color: rgba(0, 0, 0, 0.8);
+    animation: blink 1s ease-in-out infinite;
+    animation-delay: calc(var(--delay) * 0.5s);
+  }
+  
+  span:nth-child(1) {
+    --delay: 0;
+  }
+  
+  span:nth-child(2) {
+    --delay: 1;
+  }
+  
+  span:nth-child(3) {
+    --delay: 2;
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 0.2;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.2;
+    }
+  }
+
 }

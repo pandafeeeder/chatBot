@@ -1,11 +1,12 @@
 <template>
-  <div class="box bg shadow w-m" style="margin: auto; border-radius: 22px">
+  <div class="box bg shadow w-m" style="margin: auto">
     <textarea
       id="message"
       @input="adjustTextareaHeight"
       style="max-height: 200px; height: 24px; overflow-y: hidden"
       rows="1"
       class="message-box bg t-c"
+      maxlength="200"
       v-model="value"
       placeholder="问点什么..."
       ref="msgBox"
@@ -73,6 +74,7 @@ const adjustTextareaHeight = () => {
   padding-left: 1rem;
   position: sticky;
   bottom: 20px;
+  border-radius: 22px;
   &:hover {
     border-radius: 12px;
   }
@@ -102,6 +104,9 @@ const adjustTextareaHeight = () => {
   }
 }
 
+.box:hover .message-box {
+  height: 48px !important;
+}
 .btn {
   border: none;
   -webkit-text-size-adjust: 100%;

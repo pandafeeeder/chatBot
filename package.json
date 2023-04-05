@@ -23,6 +23,8 @@
     "@vue/compiler-sfc": "^3.0.4",
     "sass": "^1.60.0",
     "sass-loader": "^13.2.2",
+    "unplugin-auto-import": "^0.15.2",
+    "unplugin-vue-components": "^0.24.1",
     "vite-plugin-compression": "^0.5.1"
   }
 }
