@@ -17,7 +17,13 @@ function qa(prompt, type = 'chat') {
         type: type
     }, { headers: headers })
 }
+function fd(prompt) {
+    return axios.post(BASE_URL + '/feedback', {
+        text: prompt
+    }, { headers: headers })
+}
 
 export {
-    qa
+    qa,
+    fd
 }

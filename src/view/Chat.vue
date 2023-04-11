@@ -1,7 +1,7 @@
 <template>
   <div class="home main-bg t-c">
     <div class="header w-m">
-      <div class="title t-c l-38">GPT-3.5</div>
+      <div class="title t-c l-38">ChatGPT</div>
     </div>
     <div class="content">
       <div class="container talk-box of-h p-b-6" ref="container">
@@ -30,10 +30,10 @@
                   class="shadow flex column br-12 p-l-10 p-t-10 p-r-10 p-b-10 br-12 b-card1 bbox"
                 >
                   <div class="l-24 f-16 sec-c">
-                    <Markdown :source="item.content"></Markdown>
+                    <div>{{ item.content }}</div>
                   </div>
                   <div class="l-24 w-f t-r f-12">
-                    {{ index > 0 ? `${item.index - 1}/10` : "" }}
+                    {{ index > 0 ? `${item.index - 1}/5` : "" }}
                   </div>
                 </div>
                 <div
@@ -41,16 +41,13 @@
                   class="a-end f-16 l-24 p-l-10 p-t-10 p-r-10 p-b-10 br-12"
                   :class="{
                     ' b-card1 t-c shadow t-l':
-                      item.role === 'error' || item.role === 'loading',
+                      item.role === 'error' || item.role === 'loading'||item.role==='error-limit',
                     'b-card2 t-s t-l': item.role === 'user',
                   }"
                 >
-                  <!-- <span>{{ item.content }}</span
-                  > -->
-                  <Markdown
-                    v-if="item.role !== 'loading'"
-                    :source="item.content"
-                  ></Markdown>
+                  <div v-if="item.role === 'error-limit'">{{ item.content }}<br>觉得有用可以<a href="/home"
+                      class="tips">赞助一下！</a>  您的支持是我继续的动力！ &#x1F64F</div>
+                  <div v-else-if="item.role !== 'loading'">{{ item.content }}</div>
                   <div v-if="item.role === 'loading'" class="loading">
                     <span>.</span><span>.</span><span>.</span>
                   </div>
@@ -68,7 +65,7 @@
         <div class="p-t-20 p-b-20 p-l-10 p-r-10 bbox">
           <div class="flex row">
             <button
-            @click="reset"
+              @click="reset"
               class="bg-third flex j-center a-center m-r-10 w-45 h-45 br-25 custom-btn t-s"
             >
               <svg
@@ -87,7 +84,6 @@
                   p-id="3095"
                 ></path>
               </svg>
-              
             </button>
             <input-box
               class="flex-1"
@@ -97,8 +93,7 @@
             ></input-box>
           </div>
           <div class="tips">
-            因openai的token数量有限，所以对功能有一些限制。如果回答不完整，可以发送“继续”来获取剩余回答。
-            <a href="./future" target="_blank">更多功能</a>
+            因openai的token费用较高，所以对功能有一些限制。如果回答不完整，可以发送“继续”来获取剩余回答。
           </div>
         </div>
       </div>
@@ -108,14 +103,14 @@
 
 <script setup>
 import { reactive, onMounted, ref, nextTick } from "vue";
-import Markdown from "vue3-markdown-it";
+// import Markdown from "vue3-markdown-it";
 import InputBox from "../components/InputBox.vue";
 import { qa } from "../service";
 
 const messages = reactive([]);
 const status = ref(false);
 const msgBox = ref(null);
-const ticket = ref(11);
+const ticket = ref(6);
 const container = ref(null);
 
 const type = ref("chat");
@@ -131,8 +126,8 @@ const send = (value) => {
     return;
   }
 
-  if (ticket.value > 10) {
-    messages.push({ role: "error", content: "因token有限，每天只有10次哦！" });
+  if (ticket.value > 5) {
+    messages.push({ role: "error-limit", content: "因对话的token费用高，无力负担更多，每天限制5次，请谅解！" });
     toBottom();
     return;
   }
@@ -143,23 +138,22 @@ const send = (value) => {
   const promots = messages
     .slice(1)
     .filter((e) => e.role === "assistant" || e.role === "user");
-  qa({
-    content: promots.map((e) => {
+  qa(
+    promots.map((e) => {
       if (e.role === "assistant" || e.role === "user") {
         return { role: e.role, content: e.content };
       }
-    }).content,
-  })
+    })
+  )
     .then((data) => {
       data = data.data;
-
       if (data.choices && data.choices.length > 0) {
         let answer = data.choices[0].message.content;
         const msg = answer.replace("\\n\\n", "\n");
         messages.pop();
         messages.push({ role: "assistant", content: msg, index: ticket.value });
       } else {
-        const msg = "oops! something went wrong,try again.";
+        const msg = "Oops! something went wrong,try again.";
         messages.pop();
         messages.push({ role: "error", content: msg });
       }
@@ -170,19 +164,19 @@ const send = (value) => {
     })
     .catch(() => {
       status.value = false;
-      const msg = "oops! something went wrong,try again.";
+      const msg = "Oops! something went wrong,try again.";
       messages.pop();
       messages.push({ role: "error", content: msg });
       toBottom();
     });
 };
-const reset=()=>{
-  messages.length=0
+const reset = () => {
+  messages.length = 0;
   messages.push({
     role: "assistant",
-    content: "你好！我是GPT，你可以和我对话！",
-  })
-}
+    content: "你好！我是GPT！",
+  });
+};
 
 const toBottom = () => {
   nextTick(() => {
@@ -195,7 +189,7 @@ defineExpose({ messages, ticket });
 onMounted(() => {
   messages.push({
     role: "assistant",
-    content: "你好！我是GPT，你可以和我对话！",
+    content: "你好！我是ChatGPT！",
   });
   const tickets = localStorage.getItem("879rhiw7e3");
   const preDate = localStorage.getItem("879rhiw7e2");
@@ -203,6 +197,7 @@ onMounted(() => {
   if (date != preDate) {
     ticket.value = 1;
     localStorage.setItem("879rhiw7e2", date);
+    localStorage.setItem("879rhiw7e3", 1);
   } else {
     ticket.value = Number(tickets) || 1;
   }
@@ -303,7 +298,7 @@ onMounted(() => {
   }
 }
 
-.icon{
+.icon {
   width: 30px;
   height: 30px;
 }
@@ -328,10 +323,11 @@ onMounted(() => {
     text-align: center;
   }
 
-  a {
+  
+}
+a {
     color: orange;
   }
-}
 
 @media only screen and (min-width: 1184px) {
   .footer {

@@ -1,9 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+// import Markdown from "vue3-markdown-it";
 import router from './router'
 import store from './store'
 
-import 'highlight.js/styles/github.css';
+// import 'highlight.js/styles/github.css';
 import './index.scss'
 
 
@@ -12,6 +13,7 @@ const app = createApp(App)
 //     app.component(key, component)
 // }
 
+// app.use(Markdown)
 app.use(router)
 app.use(store)
 app.mount('#app')

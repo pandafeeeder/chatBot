@@ -1,13 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
-import Chat from '../view/Chat.vue'
-import Home from '../view/Home.vue'
-import Privacy from '../view/Privacy.vue'
-import Edit from '../view/Edit.vue'
-import Feedback from '../view/Feedback.vue'
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
@@ -16,7 +11,7 @@ const router = createRouter({
         {
             path: '/home',
             name: 'home',
-            component: Home,
+            component: () => import('../view/Home.vue'),
             meta: {
                 index: 1
             }
@@ -24,7 +19,7 @@ const router = createRouter({
         {
             path: '/chat',
             name: 'chat',
-            component: Chat,
+            component: () => import('../view/Chat.vue'),
             meta: {
                 index: 1
             }
@@ -32,7 +27,7 @@ const router = createRouter({
         {
             path: '/edit',
             name: 'edit',
-            component: Edit,
+            component: () => import('../view/Edit.vue'),
             meta: {
                 index: 1
             }
@@ -40,7 +35,15 @@ const router = createRouter({
         {
             path: '/privacy',
             name: 'privacy',
-            component: Privacy,
+            component: () => import('../view/Privacy.vue'),
+            meta: {
+                index: 1
+            }
+        },
+        {
+            path: '/feedback',
+            name: 'feedback',
+            component: () => import('../view/Feedback.vue'),
             meta: {
                 index: 1
             }

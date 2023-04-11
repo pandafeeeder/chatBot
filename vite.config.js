@@ -21,6 +21,7 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 
 
 import viteCompression from "vite-plugin-compression";
@@ -32,7 +33,7 @@ export default defineConfig({
     }),
     Components({
         resolvers: [ElementPlusResolver()],
-    }),],
+    }), chunkSplitPlugin()],
     server: {
         host: '0.0.0.0',
         proxy: {

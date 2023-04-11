@@ -1,61 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GWXBC2C1L2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-GWXBC2C1L2');
+  </script>
+  <!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script> -->
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-   .loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 0 5px;
-  background-color: #000;
-  animation: blink 1s ease-in-out infinite;
-  animation-delay: calc(var(--delay) * 0.5s);
-}
-
-.dot:nth-child(1) {
-  --delay: 0;
-}
-
-.dot:nth-child(2) {
-  --delay: 1;
-}
-
-.dot:nth-child(3) {
-  --delay: 2;
-}
-
-@keyframes blink {
-  0% {
-    opacity: 0.2;
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.2;
-  }
-}
-
-
-  </style>
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  
+  <meta name="description" content="一个可以使用ChatGPT的网站，分享更多AI知识">
+  <meta name="keywords" content="ChatGPT AI StableDiffusion 人工智能">
+  <title>pandafeeder</title>
+  <script type="module" crossorigin src="/assets/index-9746f458.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-7e8159e4.js">
+  <link rel="stylesheet" href="/assets/index-eaa33c8b.css">
 </head>
+
 <body>
-  <div class="loading">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-  </div>
+  <div id="app" style="overflow-y: auto;overflow-x: hidden;"></div>
   
 </body>
+
 </html>

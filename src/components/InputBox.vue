@@ -6,9 +6,9 @@
       style="max-height: 200px; height: 24px; overflow-y: hidden"
       rows="1"
       class="message-box bg t-c"
-      maxlength="200"
+      :maxlength="props.max || 200"
       v-model="value"
-      placeholder="问点什么..."
+      :placeholder="props.placeholder || '问点什么...'"
       ref="msgBox"
     ></textarea
     ><button class="btn" @click="send" :disabled="props.status">
@@ -33,7 +33,7 @@
 <script setup>
 import { ref } from "vue";
 
-const props = defineProps(["status"]);
+const props = defineProps(["status", "max", "placeholder"]);
 
 const value = ref("");
 const msgBox = ref(null);
