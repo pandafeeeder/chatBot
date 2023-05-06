@@ -34,7 +34,7 @@
                   <!-- <span>{{ item.content }}</span
                     > -->
                     <div v-if="item.role === 'error-limit'">{{ item.content }}<br>觉得有用可以<a href="/home"
-                      class="tips">赞助一下！</a>  您的支持是我继续的动力！ &#x1F64F</div>
+                      class="tips" @click="support">赞助一下！</a>  您的支持是我继续的动力！ &#x1F64F</div>
                   <div v-else-if="item.role !== 'loading'">{{ item.content }}</div>
                   <div v-if="item.role === 'loading'" class="loading">
                     <span>.</span><span>.</span><span>.</span>
@@ -62,25 +62,27 @@
         </div>
       </div>
     </div>
+    <sponsor :showDialog="showDialog" @close="close"></sponsor>
   </div>
 </template>
 
 <script setup>
 import { reactive, onMounted, ref, nextTick } from "vue";
 // import Markdown from "vue3-markdown-it";
+import sponsor from '../components/sponsor.vue';
 import InputBox from "../components/InputBox.vue";
-import { qa } from "../service";
+import { qa ,fd} from "../service";
 
-// var md = window.markdownit();
+
 
 const messages = reactive([]);
 const status = ref(false);
 const msgBox = ref(null);
 const ticket = ref(11);
 const container = ref(null);
+const showDialog=ref(false)
 
-const type = ref("chat");
-
+let repeat=1
 const send = (value) => {
   // messages.push({ role: "user", content: value });
   // messages.push({role:'assistant',content:'我i福哦方洪伟i黑i欧服哦iu送iu让我额若u哦入欧哦iu哦iu哦iu偶偶偶哦'})
@@ -95,6 +97,8 @@ const send = (value) => {
   if (ticket.value > 5) {
     messages.push({ role: "error-limit", content: "因对话的token费用较高，无力负担更多，每天限制5次，请谅解！" });
     toBottom();
+    repeat++
+    reachEnd(repeat);
     return;
   }
   messages.push({ role: "user", content: value.value });
@@ -131,6 +135,20 @@ const send = (value) => {
       toBottom();
     });
 };
+
+const reachEnd = (repeat) => {
+  fd('max', ticket.value + '-' + repeat)
+}
+
+const support = (e) => {
+  e.preventDefault();
+  showDialog.value = true
+  fd('support', ticket.value).catch()
+}
+const close = () => {
+  showDialog.value = false
+}
+
 const reset = () => {
   messages.length = 0;
   messages.push({

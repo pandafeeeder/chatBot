@@ -1,20 +1,5 @@
 
 
-// // vite.config.js
-// export default {
-//     server: {
-//         https:true,
-//         proxy: {
-//             '^/chat': {
-//                 target: 'https://chat.redpeanuts.workers.dev/chat',// target server address
-//                 changeOrigin: true, // enable CORS
-//                 // rewrite: path => path.replace(/^\/api/, ''), // remove /api from path
-//                 secure: true
-//             }
-//         }
-//     }
-// }
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -25,11 +10,17 @@ import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 
 
 import viteCompression from "vite-plugin-compression";
+import legacy from '@vitejs/plugin-legacy'
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
 
 
 export default defineConfig({
-    plugins: [vue(), viteCompression(), AutoImport({
+    plugins: [vue(), viteCompression(), wasm(), topLevelAwait(),AutoImport({
         resolvers: [ElementPlusResolver()],
+    }),
+    legacy({
+        targets: 'Chrome >= 70, Safari >= 13'
     }),
     Components({
         resolvers: [ElementPlusResolver()],

@@ -47,6 +47,14 @@ const router = createRouter({
             meta: {
                 index: 1
             }
+        },
+        {
+            path: '/ad',
+            name: 'ad',
+            component: () => import('../view/ad.vue'),
+            meta: {
+                index: 1
+            }
         }
     ],
 

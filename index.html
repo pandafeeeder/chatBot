@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GWXBC2C1L2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,15 +10,10 @@
 
     gtag('config', 'G-GWXBC2C1L2');
   </script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script> -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/@waline/client@v2/dist/waline.css"
-  />
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  
+
   <meta name="description" content="一个可以使用ChatGPT的网站，分享更多AI知识">
   <meta name="keywords" content="ChatGPT AI StableDiffusion 人工智能">
   <title>pandafeeder</title>
@@ -27,16 +21,7 @@
 
 <body>
   <div id="app" style="overflow-y: auto;overflow-x: hidden;"></div>
-  <!-- <div id="waline"></div> -->
   <script type="module" src="/src/main.js"></script>
-  <script type="module">
-    import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
-
-    init({
-      el: '#waline',
-      serverURL: 'https://vercel.pandafeeder.xyz',
-    });
-  </script>
 </body>
 
 </html>
