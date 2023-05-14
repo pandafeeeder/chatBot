@@ -39,6 +39,7 @@
   --text-secondary: #ffffff;
   --text-disabled: #acacbe;
   --main-bg-color: radial-gradient(61.04% 89.69% at 100% 100%, rgba(200, 250, 255, 0.08) 0%, rgba(28, 210, 229, 0.08) 40.63%, rgba(28, 210, 229, 0) 100%), radial-gradient(43.78% 64.34% at 60.31% 100%, rgba(23, 74, 228, 0.08) 0%, rgba(23, 74, 228, 0) 100%), linear-gradient(180deg, rgba(23, 74, 228, 0) 29.44%, rgba(23, 74, 228, 0.06) 100%), linear-gradient(90deg, #F3F3F7 0%, #EBF0F9 100%);
+  --el-color-primary:#1969da !important;
 }
 
 
@@ -54,7 +55,8 @@
     --text-default: #545662;
     --text-secondary: #ffffff;
     --text-disabled: #acacbe;
-    --main-bg-color: #161616
+    --main-bg-color: #161616;
+    --el-color-primary:#1969da !important;
   }
 }
 
@@ -348,6 +350,7 @@ Author: by Simurai, adapted from DuoTone themes by Simurai for Atom (http://simu
 Conversion: Bram de Haan (http://atelierbram.github.io/Base2Tone-prism/output/prism/prism-base2tone-sea-dark.css)
 Generated with Base16 Builder (https://github.com/base16-builder/base16-builder)
 */
+/* purgecss start ignore */
 pre {
   padding: 10px;
   border-radius: 5px;
@@ -523,3 +526,4 @@ pre>code.highlight {
   background: -webkit-linear-gradient(left, rgba(10, 163, 112, 0.2) 70%, rgba(10, 163, 112, 0));
   background: linear-gradient(to right, rgba(10, 163, 112, 0.2) 70%, rgba(10, 163, 112, 0));
 }
+/* purgecss end ignore */

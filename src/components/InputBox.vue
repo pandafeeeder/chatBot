@@ -1,15 +1,27 @@
 <template>
-  <div class="box bg shadow w-m" style="margin: auto">
+  <div class="box bg shadow w-m" style="margin: auto" @click="focus">
     <textarea
       id="message"
       @input="adjustTextareaHeight"
-      style="max-height: 200px; height: 24px; overflow-y: hidden"
+      style="max-height: 200px; min-height: 24px; overflow-y: hidden"
       rows="1"
       class="message-box bg t-c"
       :maxlength="props.max || 200"
       v-model="value"
+      @keydown.enter="send"
+      :disabled="props.status"
       :placeholder="props.placeholder || '问点什么...'"
       ref="msgBox"
+      type="text"
+      enterkeyhint="send"
+      dir=""
+      autofocus=""
+      autocapitalize="off"
+      autocomplete="off"
+      aria-autocomplete="both"
+      spellcheck="false"
+      aria-label="问点什么"
+      autocorrect="off"
     ></textarea
     ><button class="btn" @click="send" :disabled="props.status">
       <svg
@@ -28,6 +40,9 @@
         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
       </svg>
     </button>
+    <div class="hint t-c p-t-5 f-14" :style="`height:${value.trim() !== '' ? 20 : 0}px`">
+      {{ value.length }}/200
+    </div>
   </div>
 </template>
 <script setup>
@@ -42,7 +57,13 @@ const emit = defineEmits(["send"]);
 defineExpose({
   value,
 });
-const send = () => {
+const focus=()=>{
+  msgBox.value.focus()
+}
+const send = (e) => {
+  if (e.shiftKey) {
+    return;
+  }
   emit("send", value);
 };
 
@@ -78,6 +99,16 @@ const adjustTextareaHeight = () => {
   &:hover {
     border-radius: 12px;
   }
+  .hint {
+    height: 0px;
+    overflow: hidden;
+    color: var(--text-disabled);
+  }
+  &:hover {
+    .hint {
+      height: 20px !important;
+    }
+  }
 }
 
 .message-box {
@@ -96,17 +127,13 @@ const adjustTextareaHeight = () => {
   padding-right: 1.75rem;
   padding-left: 0;
   max-height: 200px;
-  height: 24px;
   overflow-y: hidden;
 
-  &:hover {
-    height: 48px !important;
+  &:hover + .hint {
+    height: 20px;
   }
 }
 
-.box:hover .message-box {
-  height: 48px !important;
-}
 .btn {
   border: none;
   -webkit-text-size-adjust: 100%;

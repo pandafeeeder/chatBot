@@ -41,9 +41,9 @@ const router = createRouter({
             }
         },
         {
-            path: '/feedback',
-            name: 'feedback',
-            component: () => import('../view/Feedback.vue'),
+            path: '/Help',
+            name: 'Help',
+            component: () => import('../view/Help.vue'),
             meta: {
                 index: 1
             }
@@ -52,6 +52,14 @@ const router = createRouter({
             path: '/ad',
             name: 'ad',
             component: () => import('../view/ad.vue'),
+            meta: {
+                index: 1
+            }
+        },
+        {
+            path: '/Purchase',
+            name: 'Purchase',
+            component: () => import('../view/Purchase.vue'),
             meta: {
                 index: 1
             }

@@ -12,7 +12,7 @@
       <el-row class="sponsor">
         <el-col :xs="24" :sm="24">
           <a href="https://qr.alipay.com/fkx14031qhnk4rcrofztpff">
-            <img src="../assets/alipay.png" alt="" width="200" height="200" />
+            <!-- <img src="../assets/alipay.png" alt="" width="200" height="200" /> -->
           </a>
         </el-col>
         <!-- <el-col :xs="12" :sm="12"
