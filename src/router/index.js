@@ -49,14 +49,6 @@ const router = createRouter({
             }
         },
         {
-            path: '/ad',
-            name: 'ad',
-            component: () => import('../view/ad.vue'),
-            meta: {
-                index: 1
-            }
-        },
-        {
             path: '/Purchase',
             name: 'Purchase',
             component: () => import('../view/Purchase.vue'),

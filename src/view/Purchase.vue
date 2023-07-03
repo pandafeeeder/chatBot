@@ -10,7 +10,7 @@
       </div>
       <div class="t-s m-t-10" style="font-weight: 600">请支付：{{ payPlan }}元</div>
       <div>
-        <a :href="qrUrl"><img :src="qrImg" v-if="qrUrl" class="m-t-10 br-5" /></a>
+        <a :href="qrUrl" target="_blank"><img :src="qrImg" v-if="qrUrl" class="m-t-10 br-5" /></a>
       </div>
       <div class="pay-notice">请用支付宝扫码付款</div>
       <el-divider />
@@ -25,19 +25,20 @@
         class="h-36 w-f br-4 custom-btn"
         :loading="queryFlag"
         @click="queryById"
-        >{{ queryFlag ? "查询中，请稍后" : "我已支付:去查询" }}</el-button
+        >{{ queryFlag ? "查询中，请稍后" : "我已支付:去查询(约1分钟)" }}</el-button
       >
     </div>
   </div>
   <div
     v-else-if="status === 'fail'"
-    class="p-t-30 p-l-30 p-r-30 t-center t-s f-12 p-b-30"
+    class="p-t-30 p-l-30 p-r-30 t-center f-12 p-b-30 t-c"
   >
     创建订单失败，请稍后再试！
   </div>
   <div v-else-if="status === 'paid'" class="p-t-30 p-l-30 p-r-30 t-c">
-    支付成功！ 请保存好您的密钥：
-    {{ key }}
+    支付成功！ 请保存好您的密码：<br><br>
+    <span class="t-c">{{ key }}</span> <br><br>
+    在<a href="/Chat" class="t-c">ChatGPT</a>左上角点击设置，输入密码。
   </div>
   <product
     v-if="status == 'init' || status == 'pending'"
@@ -88,6 +89,7 @@ const getQRCode = (type) => {
 };
 
 let timer = 0;
+let time=null
 const queryFlag = ref(false);
 const queryStatus = () => {
   let code = new URL(qrUrl.value).pathname;
@@ -102,11 +104,10 @@ const queryStatus = () => {
       return;
     }
     if (timer > 30) {
-      console.log("stop");
       queryFlag.value = false;
       return;
     }
-    timer = setTimeout(() => {
+    time = setTimeout(() => {
       query();
     }, 6000);
   };
@@ -115,7 +116,8 @@ const queryStatus = () => {
 
 const queryById = () => {
   queryFlag.value = true;
-  clearTimeout(timer);
+  clearTimeout(time);
+
   queryStatus(true);
 };
 </script>

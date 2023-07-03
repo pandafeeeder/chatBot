@@ -3,9 +3,10 @@
     <textarea
       id="message"
       @input="adjustTextareaHeight"
+      @change="adjustTextareaHeight"
       style="max-height: 200px; min-height: 24px; overflow-y: hidden"
       rows="1"
-      class="message-box bg t-c"
+      class="message-box bg t-c bg-t"
       :maxlength="props.max || 200"
       v-model="value"
       @keydown.enter="send"
@@ -22,8 +23,11 @@
       spellcheck="false"
       aria-label="问点什么"
       autocorrect="off"
-    ></textarea
-    ><button class="btn" @click="send" :disabled="props.status">
+    ></textarea>
+    <div class="hint t-c p-t-5 f-14" :style="`height:${value.trim() !== '' ? 20 : 0}px`">
+      {{ value.length }}/200
+    </div>
+    <button class="btn" @click="send" :disabled="props.status">
       <svg
         stroke="currentColor"
         fill="none"
@@ -40,9 +44,6 @@
         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
       </svg>
     </button>
-    <div class="hint t-c p-t-5 f-14" :style="`height:${value.trim() !== '' ? 20 : 0}px`">
-      {{ value.length }}/200
-    </div>
   </div>
 </template>
 <script setup>
@@ -57,14 +58,20 @@ const emit = defineEmits(["send"]);
 defineExpose({
   value,
 });
-const focus=()=>{
-  msgBox.value.focus()
-}
+const focus = () => {
+  msgBox.value.focus();
+};
 const send = (e) => {
   if (e.shiftKey) {
     return;
   }
+  e.preventDefault();
   emit("send", value);
+  setTimeout(() => {
+    msgBox.value.blur();
+    msgBox.value.value=''
+    adjustTextareaHeight()
+  }, 500);
 };
 
 const adjustTextareaHeight = () => {
@@ -96,11 +103,13 @@ const adjustTextareaHeight = () => {
   position: sticky;
   bottom: 20px;
   border-radius: 22px;
+  transition:all linear .5s;
+
   &:hover {
     border-radius: 12px;
   }
   .hint {
-    height: 0px;
+    height: 20px;
     overflow: hidden;
     color: var(--text-disabled);
   }
@@ -129,8 +138,14 @@ const adjustTextareaHeight = () => {
   max-height: 200px;
   overflow-y: hidden;
 
-  &:hover + .hint {
-    height: 20px;
+  &:hover ~ .hint {
+    height: 20px!important;
+  }
+  &:active ~ .hint {
+    height: 20px!important;
+  }
+  &:focus ~ .hint {
+    height: 20px!important;
   }
 }
 

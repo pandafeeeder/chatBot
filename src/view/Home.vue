@@ -3,15 +3,15 @@
   <div class="t-center l-28 p-t-6 bg-sec p-b-36">
     <div class="p-l-20 p-r-20 w-m m-auto t-l text-al t-center t-c">
     <div style="height:300px">
-      <img src="../assets/logo.png" width="300" height="300" alt="" />
+      <img src="../assets/logo.png" width="300" height="300" class="bg-t" />
     </div>
       <h1 class="t-c main-title">Pandafeeder.AI</h1>
     </div>
     <br />
     <el-row>
-      <el-col :xs="24" class="m-t-18"><a href="/Chat" class="t-c f-26">ChatGpt</a></el-col>
+      <el-col :xs="24" class="m-t-18"><a href="/Chat" class="t-c f-26">ChatGPT</a></el-col>
       <el-col :xs="24" class="m-t-36"
-        ><a href="/Purchase" class="t-c f-26">付费计划</a></el-col
+        ><a href="/Purchase"  class="t-c f-26">付费计划</a></el-col
       >
     </el-row>
     <el-row class="row-bg p-t-30" justify="center" :gutter="12">
@@ -27,15 +27,9 @@
   .text-al {
     text-align: center !important;
   }
-
-  img {
-    margin-top: 80px;
-  }
 }
 .main-title {
   font-family: Arial, Georgia, Roboto, Lato;
 }
-.head{
-  background: red;
-}
+
 </style>

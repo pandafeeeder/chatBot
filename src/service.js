@@ -3,7 +3,7 @@ import axios from 'axios'
 let BASE_URL = '/api'
 BASE_URL = 'https://devs.pandafeeder.xyz'
 
-const BASE_URL_1= 'https://chatplus.pandafeeder.xyz'
+const BASE_URL_1 = 'https://chatplus.pandafeeder.xyz'
 
 const OPENAI_API_KEY = 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // replace with your API key
 const headers = {
@@ -27,16 +27,32 @@ function fd(prompt, count = 0) {
 }
 
 
- function buy(param) {
-    return axios.post(BASE_URL_1+'/getQRCode', {
-        type:param
+function buy(param) {
+    return axios.post(BASE_URL_1 + '/getQRCode', {
+        type: param
     }, { headers: headers })
 }
 
-function getStatus(code,flag){
-    return axios.post(BASE_URL_1+'/queryStatus', {
+function getStatus(code, flag) {
+    return axios.post(BASE_URL_1 + '/queryStatus', {
         code,
-        flag:flag
+        flag: flag
+    }, { headers: headers })
+}
+
+function checkKey(key) {
+    return axios.post(BASE_URL_1 + '/checkKey', {
+        key
+    }, { headers: headers })
+}
+
+function chatplus(param) {
+    param.messages.unshift({
+        role:'system',
+        content:'funny and smart assistant'
+    })
+    return axios.post(BASE_URL_1 + '/chat', {
+        model: param.model, key: param.key, messages: param.messages
     }, { headers: headers })
 }
 
@@ -44,5 +60,7 @@ export {
     qa,
     fd,
     buy,
-    getStatus
+    getStatus,
+    chatplus,
+    checkKey
 }

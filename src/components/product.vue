@@ -23,10 +23,10 @@
           </el-text>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="12">
+      <el-col :xs="24" :sm="12" class="p-t-30">
         <el-radio-group v-model="radio1" class="radio">
           <el-row>
-            <el-col :span="24" style="text-align: center; padding-top: 30px">
+            <el-col :span="24" style="text-align: center; padding-top: 10px">
               <el-radio
                 label="1"
                 size="large"
@@ -107,6 +107,9 @@
               @click="preCreate"
               >{{ loading ? "请稍后" : "购买" }}</el-button
             >
+            <div class="t-c f-14 t-r">
+              购买前请务必查看<a href="/help" target="_blank" class="a-n t-c">《帮助说明》</a>
+            </div>
           </div>
         </div>
       </el-col>

@@ -177,6 +177,9 @@ $dir in $directions {
 .bg-sec {
   background-color: var(--color-secondary);
 }
+.bg-t{
+  background:transparent;
+}
 
 .bg-third {
   background: var(--color-third-lg);
@@ -188,13 +191,13 @@ $dir in $directions {
 
 .b-card1 {
   background-color: var(--color-primary);
-  max-width: 100%;
+  max-width: 888px;
   overflow-x: auto;
 }
 
 .b-card2 {
   background-color: var(--color-third);
-  max-width: 100%;
+  max-width: 888px;
   overflow-x: auto;
 }
 
