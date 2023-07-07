@@ -1,0 +1,77 @@
+send(txt) {
+      const th=this
+      console.log('send')
+      let start=Date.now()
+      let userMsg = {role:'user',message:txt}
+      this.messages.push(userMsg)
+      let last = {role:'assistant',message:'',done:false}
+      let timer=0
+      let flag = false
+      const API_URL =
+        'https://pandafeeder.openai.azure.com/openai/deployments/freeChat/chat/completions?api-version=2023-03-15-preview';
+      fetchEventSource(API_URL, {
+        method: 'POST',
+        headers: {
+          'api-key': 'aa9e65e6cfdc488ca52c70d42231d49c',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          messages: [
+            {role: 'system', content: ``},
+            {role: 'user', content: txt}
+          ],
+          max_tokens: 300,
+          temperature: 0.88,
+          top_p: 0.25,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+          stream: true // For streaming responses
+        }),
+        async onopen(response) {
+          if (response.ok && response.headers.get('Content-Type') === 'text/event-stream') {
+            return; // everything's good
+          } else if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+            // client-side errors are usually non-retriable:
+            throw new FatalError();
+          } else {
+
+            console.log(response)
+            return
+            throw new RetriableError();
+          }
+        },
+        onmessage(msg) {
+          // if the server emits an error message, throw an exception
+          // so it gets handled by the onerror callback below:
+          if (msg.event === 'FatalError') {
+            console.log(msg,'000')
+            return
+            throw new FatalError(msg.data);
+          } else {
+            try{
+              console.log(msg,`time is ${Date.now()-start}`)
+              let data=JSON.parse(msg.data)
+              // console.log(data.choices[0]?.delta?.content);
+              if(!flag){
+                flag = true
+                th.messages.push(last)
+              }
+              timer+=16
+              if(data.choices[0]?.delta?.content){
+                setTimeout(() => {
+                  last.message+=data.choices[0]?.delta?.content
+                  
+                }, timer);
+              }
+              if(data.choices[0]?.finish_reason){
+                last.done = true;
+              }
+
+            }catch(e){
+              console.error(e)
+            }
+            
+          }
+        }
+      });
+    },
