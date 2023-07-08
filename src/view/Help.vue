@@ -1,10 +1,10 @@
 <template>
   <div class="p-t-30 p-l-30 p-r-30">
     <h3 class="t-c">如何购买</h3>
-    <p>进入<a href="/Purchase" class="t-c">购买页面</a>，选择您所需要的套餐，点击购买</p>
+    <p>进入<a href="/purchase" class="t-c">购买页面</a>，选择您所需要的套餐，点击购买</p>
     <h3 class="t-c m-t-20">如何使用</h3>
     <p>
-      进入<a href="/Chat" class="t-c">Chat页面</a
+      进入<a href="/chats" class="t-c">Chat页面</a
       >，点击左上角设置按钮。输入密码，选择模型（当前支持gpt-3.5，gpt-4即将上线）。
       <br>
       为了有更好的体验，本站服务推荐使用 <span style="color:orange">chrome、edge、safari</span> 浏览器。

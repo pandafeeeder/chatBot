@@ -47,10 +47,7 @@ function checkKey(key) {
 }
 
 function chatplus(param) {
-    param.messages.unshift({
-        role:'system',
-        content:'funny and smart assistant'
-    })
+
     return axios.post(BASE_URL_1 + '/chat', {
         model: param.model, key: param.key, messages: param.messages
     }, { headers: headers })

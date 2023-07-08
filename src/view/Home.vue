@@ -9,14 +9,14 @@
     </div>
     <br />
     <el-row>
-      <el-col :xs="24" class="m-t-18"><a href="/Chat" class="t-c f-26">ChatGPT</a></el-col>
+      <el-col :xs="24" class="m-t-18"><a href="/chats" class="t-c f-26">ChatGPT（去试用）</a></el-col>
       <el-col :xs="24" class="m-t-36"
-        ><a href="/Purchase"  class="t-c f-26">付费计划</a></el-col
+        ><a href="/purchase"  class="t-c f-26">付费计划</a></el-col
       >
     </el-row>
     <el-row class="row-bg p-t-30" justify="center" :gutter="12">
       <el-col :xs="24" :sm="24" class="t-c"
-        >使用前请阅读<a class="t-c a-n" href="/Privacy">《隐私说明》</a> <a href="/help" class="t-c a-n">《帮助说明》</a> </el-col
+        >使用前请阅读<a class="t-c a-n" href="/privacy">《隐私说明》</a> <a href="/help" class="t-c a-n">《帮助说明》</a> </el-col
       >
     </el-row>
   </div>

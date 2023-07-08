@@ -29,7 +29,7 @@
                   <div class="l-24 f-16 sec-c">
                     <div v-html="mark(item.content)"></div>
                   </div>
-                  <div class="l-24 w-f t-r f-12" >
+                  <div class="l-24 w-f t-r f-12">
                     <span v-if="!keyStatus">{{ index > 0 ? `${item.index - 1}/5` : "" }}</span>
                   </div>
                 </div>
@@ -38,7 +38,7 @@
                     item.role === 'error' || item.role === 'loading' || item.role === 'error-limit',
                   'b-card2 t-s t-l': item.role === 'user',
                 }">
-                  <div v-if="item.role === 'error-limit'">{{ item.content }}<br>觉得有用可以<a href="/Purchase"
+                  <div v-if="item.role === 'error-limit'">{{ item.content }}<br>觉得有用可以<a href="/purchase"
                       class="tips">购买token包！</a>您的支持是我继续的动力！ &#x1F64F</div>
                   <div v-else-if="item.role !== 'loading'">{{ item.content }}</div>
                   <div v-if="item.role === 'loading'" class="loading">
@@ -51,8 +51,8 @@
           </div>
         </div>
       </div>
-      <div class="footer p-l-10 p-r-10 bg-sec bbox w-s">
-        <div class="p-t-8 p-b-10 p-l-10 p-r-10 bbox">
+      <div class="footer p-l-10 p-r-10 bg-sec bbox w-s p-t-8">
+        <div class=" p-b-10 p-l-10 p-r-10 bbox">
           <div class="flex row">
             <button @click="reset" class="bg-third flex j-center a-center m-r-10 w-45 h-45 br-25 custom-btn t-s">
               <img src="../assets/clear.svg" class="icon" alt="">
@@ -66,6 +66,17 @@
     <el-dialog v-model="showSetting" :close-on-click-modal="false" title="设置" class="br-10"
       style="max-width:400px;min-width: 300px;" width="50%">
       <el-row>
+        <el-col :span="4">角色：</el-col>
+        <el-col :span="20">
+          <select name="" id="" class="h-30 w-f el-input el-input__wrapper " style="outline: none;border: none;"
+            v-model="systemRole">
+            <option class="h-30 w-f" v-for="(item, index) in roles" :value="item.value" :key="index">{{ item.label }}
+            </option>
+
+          </select>
+        </el-col>
+      </el-row>
+      <el-row class="m-t-20">
         <el-col :span="4">密码：</el-col>
         <el-col :span="20">
           <el-input v-model="accessKey"></el-input>
@@ -110,6 +121,31 @@ const checking = ref(false)
 const accessKey = ref('')
 const keyStatus = ref(false)
 const remain = ref(0)
+const roles = reactive([{
+  label: 'AI助手',
+  value: 'funny and smart assistant'
+}, {
+  label: '英语老师',
+  value: 'You are an english coach, talk with user to help them fix grammar and spell mistakes.'
+}, {
+  label: '解梦师',
+  value: 'I want you to act as a dream interpreter. I will give you descriptions of my dreams, and you will provide interpretations based on the symbols and themes present in the dream. Do not provide personal opinions or assumptions about the dreamer. Provide only factual interpretations based on the information given.'
+},
+{
+  label: '心理学家',
+  value: 'i want you to act a psychologist. i will provide you my thoughts. i want you to give me scientific suggestions that will make me feel better.'
+},
+{
+  label: '翻译',
+  value: "You are a translator.Translate user's input to chinese or english,No additional processing."
+},
+{
+  label: '面试指导',
+  value: "You are an interview consultant,Help people to improve their interview skills."
+}
+])
+
+const systemRole = ref('funny and smart assistant')
 
 let repeat = 0
 const checkAccessKey = () => {
@@ -125,11 +161,11 @@ const checkAccessKey = () => {
       remain.value = num
       localStorage.setItem('accessKey', accessKey.value)
       keyStatus.value = true
-    } else if(num!=-9999){
+    } else if (num != -9999) {
       ElMessage.info('token已经用完啦.')
       remain.value = num
       keyStatus.value = false
-    }else{
+    } else {
       ElMessage.error('密码不存在或已失效.')
       keyStatus.value = false
       remain.value = 0
@@ -142,7 +178,6 @@ const checkAccessKey = () => {
     showSetting.value = false
     keyStatus.value = false
     remain.value = 0
-
   })
 
 }
@@ -177,21 +212,26 @@ const send = (value) => {
     })
     return;
   }
-  messages.push({ role: "user", content: value.value ,accessType: keyStatus.value?1:0});
+  messages.push({ role: "user", content: value.value, accessType: keyStatus.value ? 1 : 0 });
   messages.push({ role: "loading", content: null });
   status.value = true;
   value.value = ''
 
 
-  let currentType = keyStatus.value?1:0
+  let currentType = keyStatus.value ? 1 : 0
   const promots = messages
     .slice(1)
-    .filter((e) => (e.role === "assistant" || e.role === "user")&&(e.accessType===currentType));
+    .filter((e) => (e.role === "assistant" || e.role === "user") && (e.accessType === currentType));
 
   const param = promots.map((e) => {
     if (e.role === "assistant" || e.role === "user") {
       return { role: e.role, content: e.content };
     }
+  })
+
+  param.unshift({
+    role: 'system',
+    content: systemRole.value
   })
   if (keyStatus.value) {
     let body = {
@@ -206,7 +246,7 @@ const send = (value) => {
         let answer = data.choices[0].message.content;
         const msg = answer//.replace("\\n\\n", "\n");
         messages.pop();
-        messages.push({ role: "assistant", content: msg, index: param.length ,accessType:1});
+        messages.push({ role: "assistant", content: msg, index: param.length, accessType: 1 });
       } else {
         const msg = "Oops! something went wrong,try again.";
         messages.pop();
@@ -274,7 +314,7 @@ const reset = () => {
   messages.length = 0;
   messages.push({
     role: "assistant",
-    content: "你好！我是GPT！",
+    content: "你好，我是ChatGPT！可以在左上角设置里更改角色哦！",
   });
 };
 
@@ -289,7 +329,7 @@ defineExpose({ messages, ticket });
 onMounted(() => {
   messages.push({
     role: "assistant",
-    content: "你好！我是ChatGPT！",
+    content: "你好，我是ChatGPT！可以在左上角设置里更改角色哦！",
   });
   const tickets = localStorage.getItem("879rhiw7e3");
   const preDate = localStorage.getItem("879rhiw7e2");

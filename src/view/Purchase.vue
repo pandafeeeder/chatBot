@@ -38,7 +38,7 @@
   <div v-else-if="status === 'paid'" class="p-t-30 p-l-30 p-r-30 t-c">
     支付成功！ 请保存好您的密码：<br><br>
     <span class="t-c">{{ key }}</span> <br><br>
-    在<a href="/Chat" class="t-c">ChatGPT</a>左上角点击设置，输入密码。
+    在<a href="/chats" class="t-c">ChatGPT</a>左上角点击设置，输入密码。
   </div>
   <product
     v-if="status == 'init' || status == 'pending'"

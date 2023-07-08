@@ -17,7 +17,7 @@ const router = createRouter({
             }
         },
         {
-            path: '/chat',
+            path: '/chats',
             name: 'chat',
             component: () => import('../view/Chat.vue'),
             meta: {
@@ -41,7 +41,7 @@ const router = createRouter({
             }
         },
         {
-            path: '/Help',
+            path: '/help',
             name: 'Help',
             component: () => import('../view/Help.vue'),
             meta: {
@@ -49,13 +49,15 @@ const router = createRouter({
             }
         },
         {
-            path: '/Purchase',
+            path: '/purchase',
             name: 'Purchase',
             component: () => import('../view/Purchase.vue'),
             meta: {
                 index: 1
             }
-        }
+        },
+        { path: '/:pathMatch(.*)*', name: 'home', component: () => import('../view/Home.vue'), },
+
     ],
 
 })
