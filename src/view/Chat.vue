@@ -2,7 +2,7 @@
   <div class="home main-bg t-c">
     <div class="header w-m">
       <div class="title t-c l-38">
-        {{ model }} <button class="setting f-22 w-26 bg-t" @click="showSetting = true"><svg t="1684194447686" class="icon"
+        ChatGPT <button class="setting f-22 w-26 bg-t" @click="showSetting = true"><svg t="1684194447686" class="icon"
             viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3389" width="200" height="200">
             <path
               d="M463.68 59.52a96 96 0 0 1 96 0l320 184.64a96 96 0 0 1 48.32 83.2v369.28a96 96 0 0 1-48 83.2l-320 184.64a96 96 0 0 1-96 0l-320-184.64a96 96 0 0 1-48-83.2v-369.28a96 96 0 0 1 47.68-83.2z m64.32 55.68a32 32 0 0 0-32 0l-320 184.64a32 32 0 0 0-16 27.52v369.28a32 32 0 0 0 16 27.84l320 184.32a32 32 0 0 0 32 0l320-184.64a32 32 0 0 0 16-27.52v-369.28a32 32 0 0 0-16-27.84zM396.8 397.632a160 160 0 0 1 156.48-40.192A160.064 160.064 0 0 1 512 672a166.72 166.72 0 0 1-41.28-5.44A160 160 0 0 1 396.8 397.632zM595.2 464a96 96 0 1 0-166.272 96A96 96 0 0 0 595.2 464z"
@@ -27,10 +27,8 @@
                 <div v-if="item.role === 'assistant'"
                   class="shadow flex column br-12 p-l-16 p-t-10 p-r-16 p-b-10 br-12 b-card1 bbox">
                   <div class="l-24 f-16 sec-c">
-                    <div v-html="mark(item.content)"></div>
-                  </div>
-                  <div class="l-24 w-f t-r f-12">
-                    <span v-if="!keyStatus">{{ index > 0 ? `${item.index - 1}/5` : "" }}</span>
+                    <div v-html="mark(item.content)" v-if="item.done"></div>
+                    <div v-text="item.content" v-else></div>
                   </div>
                 </div>
                 <div v-else class="a-end f-16 l-24 p-l-16 p-t-10 p-r-16 p-b-10 br-12" :class="{
@@ -39,7 +37,7 @@
                   'b-card2 t-s t-l': item.role === 'user',
                 }">
                   <div v-if="item.role === 'error-limit'">{{ item.content }}<br>觉得有用可以<a href="/purchase"
-                      class="tips">购买token包！</a>您的支持是我继续的动力！ &#x1F64F</div>
+                      class="tips">购买密码！</a>您的支持是我继续的动力！ &#x1F64F</div>
                   <div v-else-if="item.role !== 'loading'">{{ item.content }}</div>
                   <div v-if="item.role === 'loading'" class="loading">
                     <span>.</span><span>.</span><span>.</span>
@@ -59,7 +57,8 @@
             </button>
             <input-box class="flex-1" @send="send" :status="status" ref="msgBox"></input-box>
           </div>
-          <div class="f-12 t-c t-center m-t-10">及时清理对话记录可减少token消耗哦</div>
+          <div class="f-12 t-c t-center m-t-10">ChatGPT-4已开放使用，<a href="/purchase" class="tips">购买密码</a>后可使用|<a
+              href="/home">返回首页</a>|<a href="/help">使用帮助</a></div>
         </div>
       </div>
     </div>
@@ -72,7 +71,6 @@
             v-model="systemRole">
             <option class="h-30 w-f" v-for="(item, index) in roles" :value="item.value" :key="index">{{ item.label }}
             </option>
-
           </select>
         </el-col>
       </el-row>
@@ -87,14 +85,15 @@
         <el-col :span="20">
           <el-radio-group v-model="model" class="ml-4">
             <el-radio label="GPT-3.5" size="large">GPT-3.5</el-radio>
-            <el-radio label="GPT-4" size="large" disabled>GPT-4（即将开放）</el-radio>
+            <el-radio label="GPT-4" size="large" :disabled="!keyStatus">{{ !keyStatus ? 'GPT-4（购买key后可用）' : 'GPT-4（一次消耗10个使用量）'
+            }}</el-radio>
           </el-radio-group>
         </el-col>
       </el-row>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="primary" :loading="checking" @click="checkAccessKey">
-            确认
+            确定
           </el-button>
         </span>
       </template>
@@ -106,9 +105,11 @@
 import { reactive, onMounted, ref, nextTick } from "vue";
 import prism from 'prismjs';
 import InputBox from "../components/InputBox.vue";
-import { fd, qa, chatplus, checkKey } from "../service";
+import { fd, qa, checkKey } from "../service";
 
+import { fetchEventSource } from '@microsoft/fetch-event-source';
 
+const ctrl = new AbortController();
 let marked;
 const messages = reactive([]);
 const status = ref(false);
@@ -123,7 +124,7 @@ const keyStatus = ref(false)
 const remain = ref(0)
 const roles = reactive([{
   label: 'AI助手',
-  value: 'funny and smart assistant'
+  value: 'Big model of GPT-4 from openai'
 }, {
   label: '英语老师',
   value: 'You are an english coach, talk with user to help them fix grammar and spell mistakes.'
@@ -147,7 +148,6 @@ const roles = reactive([{
 
 const systemRole = ref('funny and smart assistant')
 
-let repeat = 0
 const checkAccessKey = () => {
   if (accessKey.value.trim() == '') {
     showSetting.value = false
@@ -192,6 +192,31 @@ const mark = (msg) => {
   return msg
 }
 
+
+
+
+
+
+const handleError = () => {
+
+  const msg = "出错啦，换个话题试一试吧！";
+  messages.pop();
+  messages.push({ role: "error", content: msg });
+  status.value = false;
+  toBottom();
+}
+
+const handleExceed = () => {
+  messages.pop()
+  messages.push({ role: "error-limit", content: "因对话的token费用高，无力负担更多，免费版每天总额1000，每人限制5次，请谅解！", done: true });
+  localStorage.setItem("879rhiw7e3", 1000);
+  ticket.value = 1000
+  status.value = false;
+  toBottom();
+}
+
+class RetriableError extends Error { }
+class FatalError extends Error { }
 const send = (value) => {
   if (value.value === "") {
     messages.push({ role: "error", content: "请问有什么可以帮你！" });
@@ -201,20 +226,15 @@ const send = (value) => {
     })
     return;
   }
-
-  if (!keyStatus.value && ticket.value > 5) {
-    messages.push({ role: "error-limit", content: "因对话的token费用高，无力负担更多，免费版每天总额1000，每人限制5次，请谅解！" });
-    toBottom();
-    repeat++
-    reachEnd(repeat);
-    nextTick(() => {
-      value.value = ''
-    })
-    return;
-  }
   messages.push({ role: "user", content: value.value, accessType: keyStatus.value ? 1 : 0 });
   messages.push({ role: "loading", content: null });
   status.value = true;
+  if (!keyStatus.value && ticket.value > 5) {
+    handleExceed()
+    return;
+  }
+
+
   value.value = ''
 
 
@@ -233,82 +253,95 @@ const send = (value) => {
     role: 'system',
     content: systemRole.value
   })
-  if (keyStatus.value) {
-    let body = {
-      model: model.value,
-      messages: param.slice(-10),
-      key: accessKey.value
-    }
 
-    chatplus(body).then(res => {
-      let data = res.data
-      if (data.choices && data.choices.length > 0) {
-        let answer = data.choices[0].message.content;
-        const msg = answer//.replace("\\n\\n", "\n");
-        messages.pop();
-        messages.push({ role: "assistant", content: msg, index: param.length, accessType: 1 });
-      } else {
-        const msg = "Oops! something went wrong,try again.";
-        messages.pop();
-        messages.push({ role: "error", content: msg });
-      }
-      remain.value = Number(data.remain)
-      status.value = false;
-      msgBox.value.value = "";
-      container.value.scrollTo(0, container.value.scrollHeight);
-      nextTick(() => {
-        toBottom();
-      })
-    }).catch(() => {
-      status.value = false;
-      const msg = "Oops! something went wrong,try again later.";
-      messages.pop();
-      messages.push({ role: "error", content: msg });
-      nextTick(() => {
-        toBottom();
-      })
-    })
-
-    return
-
+  let body = {
+    model: model.value,
+    messages: param.slice(-6),
+    key: accessKey.value
   }
-
-  qa(param
-  )
-    .then((data) => {
-      data = data.data;
-      if (data.choices && data.choices.length > 0) {
-        let answer = data.choices[0].message.content;
-        const msg = answer.replace("\\n\\n", "\n");
-        messages.pop();
-        localStorage.setItem("879rhiw7e3", ++ticket.value);
-        messages.push({ role: "assistant", content: msg, index: ticket.value });
-      } else if (data === 'exceed') {
-        messages.push({ role: "error-limit", content: "因对话的token费用高，无力负担更多，免费版每天总额1000，每人限制5次，请谅解！" });
-        localStorage.setItem("879rhiw7e3", 1000);
-        ticket.value = 1000
+  let start = Date.now()
+  let last = { role: 'assistant', content: '', done: false, accessType: 1 }
+  let timer = 0
+  let flag = false
+  let API_URL =
+    'https://chatplus.pandafeeder.xyz/chat';
+  if (!keyStatus.value) {
+    API_URL =
+      'https://devs.pandafeeder.xyz/chat';
+  }
+  let retryCount = 0
+  fetchEventSource(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    async onopen(response) {
+      if (response.ok && response.headers.get('Content-Type') === 'text/event-stream') {
+        return; // everything's good
+      } else if (response.status == '507' || response.status == '403') {
+        handleExceed()
       } else {
-        const msg = "Oops! something went wrong,try again.";
-        messages.pop();
-        messages.push({ role: "error", content: msg });
+        handleError()
+
       }
-      status.value = false;
-      msgBox.value.value = "";
-      container.value.scrollTo(0, container.value.scrollHeight);
-      toBottom();
-    })
-    .catch(() => {
-      status.value = false;
-      const msg = "Oops! something went wrong,try again later.";
-      messages.pop();
-      messages.push({ role: "error", content: msg });
-      toBottom();
-    });
+    },
+    onmessage(msg) {
+      // if the server emits an error message, throw an exception
+      // so it gets handled by the onerror callback below:
+      if (msg.event === 'FatalError') {
+        handleError()
+        return
+      } else {
+        try {
+
+          let data = JSON.parse(msg.data)
+          if (!flag) {
+            if (!keyStatus.value) {
+              localStorage.setItem("879rhiw7e3", ++ticket.value);
+            } else {
+              remain.value -= (model.value == 'GPT-4' ? 20 : 1)
+            }
+            flag = true
+            messages.pop()
+            messages.push(last)
+            toBottom();
+          }
+          timer += 16
+          if (data.choices[0]?.delta?.content) {
+            setTimeout(() => {
+              last.content += data.choices[0]?.delta?.content
+              messages.pop()
+              messages.push(last)
+            }, timer);
+          }
+          if (data.choices[0]?.finish_reason) {
+            last.done = true;
+            status.value = false;
+          }
+
+        } catch (e) {
+          console.error(e)
+        }
+
+      }
+    },
+    onerror(err) {
+      console.log(err)
+      if (err instanceof FatalError || retryCount >= 3) {
+        handleError()
+        throw err; // rethrow to stop the operation
+      } else {
+        retryCount++;
+        // do nothing to automatically retry
+      }
+    },
+    onclose(res) {
+    }
+  });
+
+  return
 };
 
-const reachEnd = (repeat) => {
-  fd('max', ticket.value + '-' + repeat)
-}
+
 
 const reset = () => {
   messages.length = 0;

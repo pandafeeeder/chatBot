@@ -5,7 +5,7 @@
     "*.css"
   ],
   "scripts": {
-    "dev": "vite --debug --config vite.config.js",
+    "dev": "vite --debug --host 0.0.0.0 --config vite.config.js",
     "build": "vite build",
     "build:p": "vite-ssg build",
     "preview": "vite preview --port 8080"
