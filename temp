@@ -1,4 +1,4 @@
-send(txt) {
+send(txt) {AprLjAYGSS4x
       const th=this
       console.log('send')
       let start=Date.now()
