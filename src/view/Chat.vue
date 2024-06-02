@@ -2,8 +2,14 @@
   <div class="home main-bg t-c">
     <div class="header w-m">
       <div class="title t-c l-38">
-        ChatGPT <button class="setting f-22 w-26 bg-t" @click="showSetting = true"><svg t="1684194447686" class="icon"
-            viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3389" width="200" height="200">
+        <span @click="showSetting = true">Chat{{ model }} <svg t="1708259417033" class="icon arrow-down"
+            viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1444" width="88" height="88">
+            <path
+              d="M186.1632 373.418667a51.2 51.2 0 0 1 68.744533-3.345067l3.652267 3.310933 253.201067 253.201067 251.4944-254.8736a51.2 51.2 0 0 1 68.744533-3.754667l3.6864 3.2768a51.2 51.2 0 0 1 3.754667 68.744534l-3.2768 3.652266-287.744 291.566934a51.2 51.2 0 0 1-69.154134 3.413333l-3.4816-3.1744-289.621333-289.621333a51.2 51.2 0 0 1 0-72.430934z"
+              p-id="1445"></path>
+          </svg></span> <button class="setting f-22 w-26 bg-t" @click="showSetting = true"><svg t="1684194447686"
+            class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3389" width="88"
+            height="88">
             <path
               d="M463.68 59.52a96 96 0 0 1 96 0l320 184.64a96 96 0 0 1 48.32 83.2v369.28a96 96 0 0 1-48 83.2l-320 184.64a96 96 0 0 1-96 0l-320-184.64a96 96 0 0 1-48-83.2v-369.28a96 96 0 0 1 47.68-83.2z m64.32 55.68a32 32 0 0 0-32 0l-320 184.64a32 32 0 0 0-16 27.52v369.28a32 32 0 0 0 16 27.84l320 184.32a32 32 0 0 0 32 0l320-184.64a32 32 0 0 0 16-27.52v-369.28a32 32 0 0 0-16-27.84zM396.8 397.632a160 160 0 0 1 156.48-40.192A160.064 160.064 0 0 1 512 672a166.72 166.72 0 0 1-41.28-5.44A160 160 0 0 1 396.8 397.632zM595.2 464a96 96 0 1 0-166.272 96A96 96 0 0 0 595.2 464z"
               fill="#707070" p-id="3390"></path>
@@ -15,15 +21,15 @@
         <div class="p-b-150 of-h">
           <div class="">
             <div v-for="(item, index) in messages" :key="index" :class="{
-              'm-t-15': item.role === 'user' && index !== 0,
-              'm-b-15': item.role === 'user' && index !== messages.length - 1,
-              'p-r-48': item.role !== 'user',
-              'p-l-48': item.role === 'user',
-            }" class="flex column m-b-20 w-m bbox">
+          'm-t-15': item.role === 'user' && index !== 0,
+          'm-b-15': item.role === 'user' && index !== messages.length - 1,
+          'p-r-48': item.role !== 'user',
+          'p-l-48': item.role === 'user',
+        }" class="flex column m-b-20 w-m bbox">
               <div class="flex row t-c" :class="{
-                ' p-r-20 j-end  ': item.role === 'user',
-                'p-l-20': item.role !== 'user',
-              }">
+          ' p-r-20 j-end  ': item.role === 'user',
+          'p-l-20': item.role !== 'user',
+        }">
                 <div v-if="item.role === 'assistant'"
                   class="shadow flex column br-12 p-l-16 p-t-10 p-r-16 p-b-10 br-12 b-card1 bbox">
                   <div class="l-24 f-16 sec-c">
@@ -32,10 +38,10 @@
                   </div>
                 </div>
                 <div v-else class="a-end f-16 l-24 p-l-16 p-t-10 p-r-16 p-b-10 br-12" :class="{
-                  ' b-card1 t-c shadow t-l':
-                    item.role === 'error' || item.role === 'loading' || item.role === 'error-limit',
-                  'b-card2 t-s t-l': item.role === 'user',
-                }">
+          ' b-card1 t-c shadow t-l':
+            item.role === 'error' || item.role === 'loading' || item.role === 'error-limit',
+          'b-card2 t-s t-l': item.role === 'user',
+        }">
                   <div v-if="item.role === 'error-limit'">{{ item.content }}<br>觉得有用可以<a href="/purchase"
                       class="tips">购买密码！</a>您的支持是我继续的动力！ &#x1F64F</div>
                   <div v-else-if="item.role !== 'loading'">{{ item.content }}</div>
@@ -84,9 +90,15 @@
         <el-col :span="4" style="line-height: 38px;">模型：</el-col>
         <el-col :span="20">
           <el-radio-group v-model="model" class="ml-4">
-            <el-radio label="GPT-3.5" size="large">GPT-3.5</el-radio>
-            <el-radio label="GPT-4" size="large" :disabled="!keyStatus">{{ !keyStatus ? 'GPT-4（购买key后可用）' : 'GPT-4（一次消耗10个使用量）'
-            }}</el-radio>
+            <el-radio label="GPT-3.5" value="GPT-3.5" size="large">GPT-3.5</el-radio>
+            <el-radio label="GPT-4" value="GPT-3.5" size="large" :disabled="!keyStatus">{{ !keyStatus ?
+          'GPT-4（购买key后可用）' :
+          'GPT-4（一次消耗20个）'
+              }}</el-radio>
+            <el-radio label="GPT-4o" value="GPT-3.5" size="large" :disabled="!keyStatus">{{ !keyStatus ?
+          'GPT-4o（购买key后可用）' :
+          'GPT-4o（一次消耗20个）'
+              }}</el-radio>
           </el-radio-group>
         </el-col>
       </el-row>
@@ -106,6 +118,7 @@ import { reactive, onMounted, ref, nextTick } from "vue";
 import prism from 'prismjs';
 import InputBox from "../components/InputBox.vue";
 import { fd, qa, checkKey } from "../service";
+import { ElMessage } from "element-plus";
 
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
@@ -124,7 +137,7 @@ const keyStatus = ref(false)
 const remain = ref(0)
 const roles = reactive([{
   label: 'AI助手',
-  value: 'Big model of GPT-4 from openai'
+  value: 'You are an AI assistant that helps people find information.'
 }, {
   label: '英语老师',
   value: 'You are an english coach, talk with user to help them fix grammar and spell mistakes.'
@@ -146,7 +159,7 @@ const roles = reactive([{
 }
 ])
 
-const systemRole = ref('funny and smart assistant')
+const systemRole = ref('You are an AI assistant that helps people find information.')
 
 const checkAccessKey = () => {
   if (accessKey.value.trim() == '') {
@@ -298,7 +311,7 @@ const send = (value) => {
             if (!keyStatus.value) {
               localStorage.setItem("879rhiw7e3", ++ticket.value);
             } else {
-              remain.value -= (model.value == 'GPT-4' ? 20 : 1)
+              remain.value -= (model.value == 'GPT-4'||model.value == 'GPT-4o' ? 20 : 1)
             }
             flag = true
             messages.pop()
@@ -560,5 +573,12 @@ a {
 p {
   padding: 0;
   margin: 0;
+}
+
+.arrow-down {
+  position: relative;
+  top: 8px;
+  left: -2px;
+  width: 22px;
 }
 </style>
